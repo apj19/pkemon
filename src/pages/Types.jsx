@@ -1,10 +1,11 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { ClockLoader } from "react-spinners";
 import CircleLoader from "react-spinners/CircleLoader";
 import { pokemontypeColor } from "../utilities/pokemonTypes";
+import Card from "../Components/Card";
 
 function Types() {
   const { typeName } = useParams();
@@ -20,8 +21,16 @@ function Types() {
     let typespokemons = data.pokemon;
     let randomPokemons = [];
     for (let i = 0; i < 12; i++) {
+      let generateNumber = [];
       let tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
-      randomPokemons.push(typespokemons[tempnum].pokemon);
+      if (generateNumber.includes(tempnum)) {
+        tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
+        generateNumber.push(tempnum);
+        randomPokemons.push(typespokemons[tempnum].pokemon);
+      } else {
+        generateNumber.push(tempnum);
+        randomPokemons.push(typespokemons[tempnum].pokemon);
+      }
     }
 
     // console.log(randomPokemons);
@@ -38,7 +47,10 @@ function Types() {
       let imagesrc =
         res.sprites.other.dream_world.front_default ||
         res.sprites.other.home.front_default ||
-        res.sprites.other.home.front_shiny;
+        res.sprites.other.home.front_shiny ||
+        res.sprites.front_shiny ||
+        res.sprites.front_default;
+
       let name = res.name;
       let returnobj = {
         pokemonName: name,
@@ -62,7 +74,7 @@ function Types() {
   //  text-[${
   // pokemontypeColor[`${typeName}`]
   return (
-    <div className="pt-10 pl-[150px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="pt-14 pl-[200px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center">
       {showLoder && (
         <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
           {/* <ClockLoader color="#ff0500" /> */}
@@ -70,19 +82,13 @@ function Types() {
         </div>
       )}
       {typePokemon.map((pokemon, i) => (
-        <div
-          key={i}
-          className={`flex flex-col justify-center items-center rounded-md w-[200px] h-[200px] bg-white drop-shadow-lg`}
-        >
-          <img
-            className="w-[150px] h-[150px]"
-            src={pokemon?.PokemonImgSrc}
-            alt="Not Found"
+        <Link key={i} to={`/pokemon/${pokemon.pokemonName}`}>
+          <Card
+            imgsrc={pokemon?.PokemonImgSrc}
+            name={pokemon.pokemonName}
+            textColor={textColor}
           />
-          <p className="tracking-wider" style={{ color: textColor }}>
-            {pokemon.pokemonName}
-          </p>
-        </div>
+        </Link>
       ))}
     </div>
   );

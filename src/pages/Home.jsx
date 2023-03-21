@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Card from "../Components/Card";
 
 function Home() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -7,7 +9,7 @@ function Home() {
   async function showPokemons() {
     // const api = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`);
     // const data = await api.json();
-    const dummyArray = [1, 6, 9, 12, 15, 18, 21, 29, 35, 10, 150, 19];
+    const dummyArray = [25, 6, 9, 12, 15, 18, 21, 29, 35, 1, 150, 19];
     const promises = dummyArray.map(async (pokemon) => {
       //   let num = Math.ceil(Math.random() * 100);
       const result = await fetch(
@@ -38,19 +40,11 @@ function Home() {
   }, []);
 
   return (
-    <div className=" pl-[150px] pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
+    <div className=" pl-[200px] pt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center ">
       {pokemonList.map((pokemon, i) => (
-        <div
-          key={i}
-          className="flex flex-col justify-center items-center rounded-md w-[200px] h-[200px] bg-[#0c0c0c] drop-shadow-lg "
-        >
-          <img
-            className="w-[150px] h-[150px]"
-            src={pokemon?.PokemonImgSrc}
-            alt="Not Found"
-          />
-          <p className="tracking-wider">{pokemon.pokemonName}</p>
-        </div>
+        <Link key={i} to={`/pokemon/${pokemon.pokemonName}`}>
+          <Card imgsrc={pokemon?.PokemonImgSrc} name={pokemon.pokemonName} />
+        </Link>
       ))}
     </div>
   );
