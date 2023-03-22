@@ -22,4 +22,33 @@ async function getListofEvoluation(url) {
     return evolutionArray;
   }
 
-  export {getListofEvoluation}
+
+  async function showPokemons(pokemonArray) {
+  
+    // const dummyArray = [25, 6, 9, 12, 15, 18, 21, 29, 35, 1, 150, 19];
+    const promises = pokemonArray.map(async (pokemon) => {
+      const result = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemon}/`
+      );
+      const res = await result.json();
+      
+      let imagesrc =
+        res.sprites.other.dream_world.front_default ||
+        res.sprites.other.home.front_default ||
+        res.sprites.other.home.front_shiny;
+      let name = res.name;
+      let returnobj = {
+        id: pokemon,
+        pokemonName: name,
+        PokemonImgSrc: imagesrc,
+      };
+      return returnobj;
+    });
+
+    const results = await Promise.all(promises);
+    return results
+    
+    
+  }
+
+  export {getListofEvoluation,showPokemons}
