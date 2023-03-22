@@ -1,7 +1,21 @@
 import axios from "axios";
 async function getListofEvoluation(url) {
-    const data = await axios.get(url);
+  // console.log(url);
+  let data;
+  try {
+     data = await axios.get(url);
+  } catch (error) {
+    // console.log(error);
+    return [];
+  }
+    // const data = await axios.get(url);
+    // console.log(data.status);
+
     const evoluation = await axios.get(data.data.evolution_chain.url);
+    if(evoluation.status == 404){
+      console.log("not found");
+      return null;
+    }
 
     let evolutionArray = [evoluation.data.chain.species.name];
     let evolutionQueue = evoluation.data.chain.evolves_to;
@@ -27,10 +41,12 @@ async function getListofEvoluation(url) {
   
     // const dummyArray = [25, 6, 9, 12, 15, 18, 21, 29, 35, 1, 150, 19];
     const promises = pokemonArray.map(async (pokemon) => {
-      const result = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemon}/`
+      const result = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`
       );
-      const res = await result.json();
+      if(result.status == 404){
+        return null;
+      }else{
+        const res = result.data;
       
       let imagesrc =
         res.sprites.other.dream_world.front_default ||
@@ -43,9 +59,17 @@ async function getListofEvoluation(url) {
         PokemonImgSrc: imagesrc,
       };
       return returnobj;
+
+      }
+      
     });
 
-    const results = await Promise.all(promises);
+    const results = await Promise.all(promises).catch((err) =>{
+      // log that I have an error, return the entire array;
+      console.log('A promise failed to resolve', err);
+      return [];
+  });
+    
     return results
     
     

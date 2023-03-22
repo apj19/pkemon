@@ -9,7 +9,9 @@ function Home() {
   async function showPokemons() {
     // const api = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`);
     // const data = await api.json();
-    const dummyArray = [25, 6, 9, 12, 15, 18, 21, 29, 35, 1, 150, 19];
+    const dummyArray = [
+      25, 6, 9, 493, 249, 384, 382, 383, 483, 484, 487, 250, 150, 19,
+    ];
     const promises = dummyArray.map(async (pokemon) => {
       //   let num = Math.ceil(Math.random() * 100);
       const result = await fetch(
@@ -42,7 +44,7 @@ function Home() {
   return (
     <div className="pt-14 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center z-0 ">
       {pokemonList.map((pokemon, i) => (
-        <Link key={i} to={`/pokemon/${pokemon.pokemonName}`}>
+        <Link key={i} to={`/pokemon/${pokemon.id}`} state={pokemon}>
           <Card imgsrc={pokemon?.PokemonImgSrc} name={pokemon.pokemonName} />
         </Link>
       ))}

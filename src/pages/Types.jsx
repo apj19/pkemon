@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import { ClockLoader } from "react-spinners";
+
 import CircleLoader from "react-spinners/CircleLoader";
 import { pokemontypeColor } from "../utilities/pokemonTypes";
 import Card from "../Components/Card";
@@ -21,16 +21,17 @@ function Types() {
     let typespokemons = data.pokemon;
     let randomPokemons = [];
     for (let i = 0; i < 12; i++) {
-      let generateNumber = [];
-      let tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
-      if (generateNumber.includes(tempnum)) {
-        tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
-        generateNumber.push(tempnum);
-        randomPokemons.push(typespokemons[tempnum].pokemon);
-      } else {
-        generateNumber.push(tempnum);
-        randomPokemons.push(typespokemons[tempnum].pokemon);
-      }
+      // let generateNumber = [];
+      // let tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
+      // if (generateNumber.includes(tempnum)) {
+      //   tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
+      //   generateNumber.push(tempnum);
+      //   randomPokemons.push(typespokemons[tempnum].pokemon);
+      // } else {
+      //   generateNumber.push(tempnum);
+      //   randomPokemons.push(typespokemons[tempnum].pokemon);
+      // }
+      randomPokemons.push(typespokemons[i * 2].pokemon);
     }
 
     // console.log(randomPokemons);
@@ -53,6 +54,7 @@ function Types() {
 
       let name = res.name;
       let returnobj = {
+        id: res.id,
         pokemonName: name,
         PokemonImgSrc: imagesrc,
       };
@@ -60,7 +62,7 @@ function Types() {
     });
 
     const results = await Promise.all(promises);
-    // let newlist= [...results]
+    // console.log("checkthis", results);
     setTypePokemon(results);
     setShowLoader(false);
     // console.log(results);
@@ -82,7 +84,7 @@ function Types() {
         </div>
       )}
       {typePokemon.map((pokemon, i) => (
-        <Link key={i} to={`/pokemon/${pokemon.pokemonName}`}>
+        <Link key={i} to={`/pokemon/${pokemon.id}`} state={pokemon}>
           <Card
             imgsrc={pokemon?.PokemonImgSrc}
             name={pokemon.pokemonName}

@@ -19,13 +19,16 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <main className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#f1f1f1] text-black p-8">
+    <main
+      className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#f1f1f1]  p-8 bg-cover bg-center text-white"
+      style={{ backgroundImage: "url(../bg1.jpg)" }}
+    >
       <TopNav />
       {/* <LeftNav /> */}
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="type/:typeName" element={<Types />}></Route>
-        <Route path="evoluation" element={<Evoluation />}></Route>
+        {/* <Route path="evoluation" element={<Evoluation />}></Route> */}
         <Route
           path="/pokemon/:pokemonname"
           element={<PokemonDetails />}
