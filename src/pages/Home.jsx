@@ -40,7 +40,7 @@ function Home() {
   }, []);
 
   return (
-    <div className=" pl-[200px] pt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center ">
+    <div className="pt-14 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center z-0 ">
       {pokemonList.map((pokemon, i) => (
         <Link key={i} to={`/pokemon/${pokemon.pokemonName}`}>
           <Card imgsrc={pokemon?.PokemonImgSrc} name={pokemon.pokemonName} />

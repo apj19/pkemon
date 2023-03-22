@@ -74,7 +74,7 @@ function Types() {
   //  text-[${
   // pokemontypeColor[`${typeName}`]
   return (
-    <div className="pt-14 pl-[200px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center">
+    <div className="pt-14  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center">
       {showLoder && (
         <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
           {/* <ClockLoader color="#ff0500" /> */}

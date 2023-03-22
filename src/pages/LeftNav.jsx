@@ -5,10 +5,10 @@ import { pokemontypeColor } from "../utilities/pokemonTypes";
 
 function LeftNav() {
   return (
-    <div className="fixed left-0 top-14 w-[150px] h-full  pl-4 py-2 overflow-y-scroll scrollbar-hide">
+    <div className=" bg-white h-full  px-8 py-2 overflow-y-scroll scrollbar-hide">
       {pokemonTypes.map((m, i) => (
         <Link key={i} to={`/type/${m}`}>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center hover:bg-slate-50">
             <p className="py-2 pl-2 tracking-wider">{m}</p>
 
             <svg

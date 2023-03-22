@@ -19,9 +19,9 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <main className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#f1f1f1] text-black">
+    <main className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#f1f1f1] text-black p-8">
       <TopNav />
-      <LeftNav />
+      {/* <LeftNav /> */}
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="type/:typeName" element={<Types />}></Route>
