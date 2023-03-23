@@ -45,12 +45,12 @@ const pokemontypeColor = {
   default: "#fafafa",
 };
 const stateicons = [
-  <i class="fa-solid fa-heart text-green-600"></i>,
-  <i class="fa-solid fa-fire text-red-400"></i>,
-  <i class="fa-solid fa-shield text-blue-400"></i>,
-  <i class="fa-solid fa-fire text-red-600"></i>,
-  <i class="fa-solid fa-shield text-blue-600"></i>,
+  <i className="fa-solid fa-heart text-green-600"></i>,
+  <i className="fa-solid fa-fire text-red-400"></i>,
+  <i className="fa-solid fa-shield text-blue-400"></i>,
+  <i className="fa-solid fa-fire text-red-600"></i>,
+  <i className="fa-solid fa-shield text-blue-600"></i>,
 
-  <i class="fa-solid fa-bolt text-yellow-600 "></i>,
+  <i className="fa-solid fa-bolt text-yellow-600 "></i>,
 ];
 export { pokemonTypes, pokemontypeColor, stateicons };

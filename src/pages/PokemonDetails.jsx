@@ -222,6 +222,7 @@ function PokemonDetails() {
         <p>Strength</p>
         {pokemonMasterData.strength.map((m, i) => (
           <button
+            key={m}
             className="rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7 text-black "
             style={{ backgroundColor: `${pokemontypeColor[m]}` }}
           >
@@ -233,6 +234,7 @@ function PokemonDetails() {
         <p>Weak Against</p>
         {pokemonMasterData.weakness.map((m, i) => (
           <button
+            key={m}
             className="rounded-md  px-3.5 py-1.5 text-base font-semibold leading-7 text-black "
             style={{ backgroundColor: `${pokemontypeColor[m]}` }}
           >

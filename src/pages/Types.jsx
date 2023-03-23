@@ -12,31 +12,48 @@ function Types() {
   const [typePokemon, setTypePokemon] = useState([]);
   const [showLoder, setShowLoader] = useState(false);
   const [textColor, setTextColor] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const typApi = "https://pokeapi.co/api/v2/type/";
-  async function showPokemons() {
-    setShowLoader(true);
+
+  async function loadAllPokemons(start) {
     const api = await fetch(`${typApi}${typeName}/`);
     const data = await api.json();
     let typespokemons = data.pokemon;
-    let randomPokemons = [];
-    for (let i = 0; i < 12; i++) {
-      // let generateNumber = [];
-      // let tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
-      // if (generateNumber.includes(tempnum)) {
-      //   tempnum = Math.ceil(Math.random() * (typespokemons.length - 1));
-      //   generateNumber.push(tempnum);
-      //   randomPokemons.push(typespokemons[tempnum].pokemon);
-      // } else {
-      //   generateNumber.push(tempnum);
-      //   randomPokemons.push(typespokemons[tempnum].pokemon);
-      // }
-      randomPokemons.push(typespokemons[i * 2].pokemon);
+    return typespokemons.slice(start, start + 12);
+  }
+  function handleclick(pagenumber) {
+    if (pagenumber == "prv") {
+      if (currentPage == 1) {
+      } else {
+        setCurrentPage(currentPage - 1);
+      }
+    } else if (pagenumber == "nxt") {
+      if (currentPage == 4) {
+      } else {
+        setCurrentPage(currentPage + 1);
+      }
+    } else {
+      setCurrentPage(pagenumber);
     }
 
+    // console.log(pagenumber);
+  }
+
+  async function showPokemons(start) {
+    setShowLoader(true);
+    if (start == 1) {
+      start == 0;
+    } else {
+      start = (start - 1) * 12;
+    }
+
+    let inputlist = await loadAllPokemons(start);
+    let randomPokemons = [];
+    for (let i = 0; i < 12; i++) {
+      randomPokemons.push(inputlist[i].pokemon);
+    }
     // console.log(randomPokemons);
-    // console.log();
-    // const dummyArray = [1, 6, 9, 12, 15, 18, 21, 29, 35, 10, 150, 19];
     const promises = randomPokemons.map(async (pokemon) => {
       //   let num = Math.ceil(Math.random() * 100);
       const result = await fetch(
@@ -68,30 +85,76 @@ function Types() {
     // console.log(results);
   }
   useEffect(() => {
-    showPokemons();
+    showPokemons(currentPage);
     setTextColor(`${pokemontypeColor[`${typeName}`]}`);
-  }, [typeName]);
+  }, [currentPage]);
 
   // console.log(textColor);
   //  text-[${
   // pokemontypeColor[`${typeName}`]
   return (
-    <div className="pt-14  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center">
+    <div>
       {showLoder && (
         <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
           {/* <ClockLoader color="#ff0500" /> */}
           <CircleLoader color="#36d7b7" />
         </div>
       )}
-      {typePokemon.map((pokemon, i) => (
-        <Link key={i} to={`/pokemon/${pokemon.id}`} state={pokemon}>
-          <Card
-            imgsrc={pokemon?.PokemonImgSrc}
-            name={pokemon.pokemonName}
-            textColor={textColor}
-          />
-        </Link>
-      ))}
+      <div className="pt-14  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center">
+        {typePokemon.map((pokemon, i) => (
+          <Link key={i} to={`/pokemon/${pokemon.id}`} state={pokemon}>
+            <Card
+              imgsrc={pokemon?.PokemonImgSrc}
+              name={pokemon.pokemonName}
+              textColor={textColor}
+            />
+          </Link>
+        ))}
+      </div>
+      <div className="flex justify-center items-center mt-8">
+        <div className="flex">
+          <button
+            onClick={(event) => handleclick("prv")}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md  dark:text-gray-400 hover:scale-105 "
+            disabled={currentPage == 1 ? true : false}
+          >
+            Previous
+          </button>
+
+          <button
+            onClick={(event) => handleclick(1)}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+          >
+            1
+          </button>
+          <button
+            onClick={(event) => handleclick(2)}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+          >
+            2
+          </button>
+          <button
+            onClick={(event) => handleclick(3)}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+          >
+            3
+          </button>
+          <button
+            onClick={(event) => handleclick(4)}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+          >
+            4
+          </button>
+
+          <button
+            onClick={(event) => handleclick("nxt")}
+            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+            disabled={currentPage == 4 ? true : false}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
