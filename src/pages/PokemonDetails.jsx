@@ -199,10 +199,10 @@ function PokemonDetails() {
             </p>
           </div>
 
-          {console.log("masterDataLoaded", pokemonMasterData)}
+          {/* {console.log("masterDataLoaded", pokemonMasterData)} */}
           <div>
             {pokemonMasterData.states.map((m, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i * 1.23} className="flex gap-2">
                 <p>{m.stateName}</p>
                 <p>{stateicons[i]}</p>
                 <p>{m.stateValue}</p>
