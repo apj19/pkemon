@@ -153,16 +153,16 @@ function Home() {
                 Find all about Pokemons.......
               </p>
 
-              <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
-                <div className=" ">
+              <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-4">
+                <div className="w-full md:w-auto ">
                   <Combobox value={selectedPerson} onChange={setSelectedPerson}>
                     <Combobox.Input
                       onChange={(event) => setQuery(event.target.value)}
                       className="text-white border
-                       border-blue-500 bg-transparent h-[45px] backdrop-blur-sm rounded placeholder-white "
+                       border-blue-500 bg-transparent h-[45px] backdrop-blur-sm rounded placeholder-white w-full md:w-auto "
                       placeholder="Search with Name"
                     />
-                    <Combobox.Options className="h-[150px] absolute z-10 overflow-y-scroll text-white scrollbar-thin scrollbar-thumb-red-500 mt-4 flex flex-col justify-start items-start">
+                    <Combobox.Options className="h-[150px] absolute z-10 overflow-y-scroll text-white scrollbar-thin scrollbar-thumb-red-500 mt-4 flex flex-col justify-start items-start backdrop-blur-lg md:backdrop-blur-none w-[280px] md:w-auto">
                       {filteredPeople.map((person) => (
                         <Combobox.Option
                           className="py-1 cursor-pointer"
@@ -177,7 +177,7 @@ function Home() {
                 </div>
                 <button
                   onClick={findpokemon}
-                  className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+                  className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 md:w-auto"
                 >
                   Search
                 </button>
@@ -265,7 +265,7 @@ function Home() {
       )}
 
       {showResult && (
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex justify-center items-center mt-6">
           <div className="flex flex-col justify-center items-center">
             <Link to={`/pokemon/${searchPokemon.id}`} state={searchPokemon}>
               <Card

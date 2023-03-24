@@ -1,11 +1,12 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 
 import CircleLoader from "react-spinners/CircleLoader";
 import { pokemontypeColor } from "../utilities/pokemonTypes";
 import Card from "../Components/Card";
+import axios from "axios";
 
 function Types() {
   const { typeName } = useParams();
@@ -13,14 +14,22 @@ function Types() {
   const [showLoder, setShowLoader] = useState(false);
   const [textColor, setTextColor] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
   // console.log(typeName);
   // console.log("currentPage", currentPage);
   const typApi = "https://pokeapi.co/api/v2/type/";
 
   async function loadAllPokemons(start) {
-    const api = await fetch(`${typApi}${typeName}/`);
-    const data = await api.json();
-    let typespokemons = data.pokemon;
+    let api;
+    try {
+      api = await axios.get(`${typApi}${typeName}/`);
+    } catch (error) {
+      // console.log(error);
+      navigate("/notfound");
+      return [];
+    }
+    // const data = await api.json();
+    let typespokemons = api.data.pokemon;
     return typespokemons.slice(start, start + 12);
   }
   function handleclick(pagenumber) {
@@ -50,39 +59,43 @@ function Types() {
     }
 
     let inputlist = await loadAllPokemons(start);
-    let randomPokemons = [];
-    for (let i = 0; i < 12; i++) {
-      randomPokemons.push(inputlist[i].pokemon);
+    // console.log(inputlist);
+    if (inputlist.length != 0) {
+      let randomPokemons = [];
+      for (let i = 0; i < 12; i++) {
+        randomPokemons.push(inputlist[i].pokemon);
+      }
+      // console.log(randomPokemons);
+      const promises = randomPokemons.map(async (pokemon) => {
+        //   let num = Math.ceil(Math.random() * 100);
+        const result = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`
+        );
+        const res = await result.json();
+        //   console.log(res);
+        // let imagesrc = res.sprites.other.dream_world.front_default;
+        let imagesrc =
+          res.sprites.other.dream_world.front_default ||
+          res.sprites.other.home.front_default ||
+          res.sprites.other.home.front_shiny ||
+          res.sprites.front_shiny ||
+          res.sprites.front_default;
+
+        let name = res.name;
+        let returnobj = {
+          id: res.id,
+          pokemonName: name,
+          PokemonImgSrc: imagesrc,
+        };
+        return returnobj;
+      });
+
+      const results = await Promise.all(promises);
+      // console.log("checkthis", results);
+      setTypePokemon(results);
+      setShowLoader(false);
     }
-    // console.log(randomPokemons);
-    const promises = randomPokemons.map(async (pokemon) => {
-      //   let num = Math.ceil(Math.random() * 100);
-      const result = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`
-      );
-      const res = await result.json();
-      //   console.log(res);
-      // let imagesrc = res.sprites.other.dream_world.front_default;
-      let imagesrc =
-        res.sprites.other.dream_world.front_default ||
-        res.sprites.other.home.front_default ||
-        res.sprites.other.home.front_shiny ||
-        res.sprites.front_shiny ||
-        res.sprites.front_default;
 
-      let name = res.name;
-      let returnobj = {
-        id: res.id,
-        pokemonName: name,
-        PokemonImgSrc: imagesrc,
-      };
-      return returnobj;
-    });
-
-    const results = await Promise.all(promises);
-    // console.log("checkthis", results);
-    setTypePokemon(results);
-    setShowLoader(false);
     // console.log(results);
   }
   let orignaltype = typeName;

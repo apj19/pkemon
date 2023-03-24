@@ -11,10 +11,10 @@ function LeftNav() {
         Select Type
       </p>
       <Link to="/">
-        <p className="pl-2 hover:scale-110">Home</p>
+        <p className="pl-2 hover:scale-110 mb-2">Home</p>
       </Link>
       <Link to="/legendary">
-        <p className="pl-2 hover:scale-110">LEGENDARY</p>
+        <p className="pl-2 hover:scale-110 text-yellow-600">LEGENDARY</p>
       </Link>
       {pokemonTypes.map((m, i) => (
         <Link key={m} to={`/type/${m}`}>

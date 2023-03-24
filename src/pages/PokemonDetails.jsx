@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useLocation, useParams, Link, useNavigate } from "react-router-dom";
 import {
   getListofEvoluation,
   showPokemons,
@@ -25,7 +25,12 @@ function PokemonDetails() {
   const [showLoder, setShowLoader] = useState(false);
   const [textColor, setTextColor] = useState();
   const urlState = useLocation();
-  let urlstateName = urlState.state.pokemonName;
+  const navigate = useNavigate();
+  // console.log(urlState);
+  let urlstateName = "";
+  if (urlState.state != null) {
+    urlstateName = urlState.state.pokemonName;
+  }
   // console.log(pokemonname);
   // console.log(urlState.state);
 
@@ -42,117 +47,123 @@ function PokemonDetails() {
 
   async function loadAllData() {
     setShowLoader(true);
-    const pdata = await axios.get(pokemonDetailsApi);
-
-    // console.log(pdata.data.name);
-    pokemonAllData.name = pdata.data.name;
-    // console.log("Pokemon-name", pokemonname);
-    let imagesrc =
-      pdata.data.sprites.other.dream_world.front_default ||
-      pdata.data.sprites.other.home.front_default ||
-      pdata.data.sprites.other.home.front_shiny;
-    // console.log(imagesrc);
-    pokemonAllData.imgsrc = imagesrc;
-    // console.log("imagelink", imagesrc);
-    const rawheight = pdata.data.height;
-    const rawweight = pdata.data.weight;
-    pokemonAllData.height = rawheight / 10;
-    pokemonAllData.weight = rawweight / 10;
-    // console.log("height in m", Math.floor(rawheight / 10));
-    // console.log("weight in kg", Math.floor(rawweight / 10));
-    /////------is legendary-----------------------
-    pokemonAllData.isLegendary = false;
-    // const spaciesdata = await axios.get(
-    //   `https://pokeapi.co/api/v2/pokemon-species/${pokemonname.toLowerCase()}`
-    // );
-    // if (spaciesdata.status != 200) {
-    //   pokemonAllData.isLegendary = false;
-    // } else {
-    //   pokemonAllData.isLegendary = spaciesdata.data.is_legendary;
-    // } // console.log("is legendary", spaciesdata.data.is_legendary);
-
-    ///---------abilites--------------
-    const abilityList = pdata.data.abilities;
-    // // console.log(abilityList);
-    // abilityList.forEach((e) => {
-    //   // console.log(e.ability.name);
-    //   // console.log(e.ability.url);
-    // });
-
-    const promises = abilityList.map(async (e) => {
-      const result = await axios.get(e.ability.url);
-      // console.log(result.data.flavor_text_entries[0]);
-      // return result.data.flavor_text_entries[0].flavor_text;
-      return {
-        ablityName: e.ability.name,
-        explation: result.data.flavor_text_entries[0].flavor_text,
-      };
-    });
-
-    const results = await Promise.all(promises);
-    pokemonAllData.abilities = results;
-    // console.log("Ability List", results);
-
-    //----------------------Strength & weakness-----------------------
-    const typename = pdata.data.types[0].type.name;
-    const typeUrl = pdata.data.types[0].type.url;
-    pokemonAllData.type = typename;
-    // console.log("pokemontype", typename);
-    // // console.log(typeUrl);
-    const powerData = await axios.get(typeUrl);
-    // // console.log(powerData.data.damage_relations);
-    const strong = powerData.data.damage_relations.double_damage_to;
-    const strength = [];
-    strong.forEach((e) => {
-      strength.push(e.name);
-    });
-    // console.log("strong against", strength);
-    pokemonAllData.strength = strength;
-    const weak = powerData.data.damage_relations.double_damage_from;
-    const weakness = [];
-    weak.forEach((e) => {
-      weakness.push(e.name);
-    });
-    pokemonAllData.weakness = weakness;
-    // console.log("weak against", weakness);
-    /////-----------------moves 5------------
-    const movearray = pdata.data.moves;
-    const topMoves = [];
-    for (let i = 0; i < 5; i++) {
-      // movearray[i].move.name;
-      topMoves.push(movearray[i].move.name);
+    let pdata;
+    try {
+      pdata = await axios.get(pokemonDetailsApi);
+    } catch (error) {
+      navigate("/notfound");
+      pdata = null;
     }
-    pokemonAllData.moves = topMoves;
-    // console.log("top Moves", topMoves);
+    if (pdata != null) {
+      pokemonAllData.name = pdata.data.name;
 
-    /////-------------------------------------------------
-    const pstates = pdata.data.stats;
-    const statesData = [];
-    pstates.forEach((e) => {
-      statesData.push({ stateName: e.stat.name, stateValue: e.base_stat });
-    });
-    pokemonAllData.states = statesData;
-    // console.log("stats", statesData);
-    //-------------------------------------------------
-    // console.log(pstates);
-    ///-----evoluation data-----------
-    const evoluationList = await getListofEvoluation(evoluationApi);
-    // console.log("Evoluation means getlist success -", evoluationList);
-    evoluationPokemonData = await showPokemons(evoluationList);
-    // console.log(evoluationPokemonData);
+      let imagesrc =
+        pdata.data.sprites.other.dream_world.front_default ||
+        pdata.data.sprites.other.home.front_default ||
+        pdata.data.sprites.other.home.front_shiny;
+      // console.log(imagesrc);
+      pokemonAllData.imgsrc = imagesrc;
+      // console.log("imagelink", imagesrc);
+      const rawheight = pdata.data.height;
+      const rawweight = pdata.data.weight;
+      pokemonAllData.height = rawheight / 10;
+      pokemonAllData.weight = rawweight / 10;
+      // console.log("height in m", Math.floor(rawheight / 10));
+      // console.log("weight in kg", Math.floor(rawweight / 10));
+      /////------is legendary-----------------------
+      pokemonAllData.isLegendary = false;
+      // const spaciesdata = await axios.get(
+      //   `https://pokeapi.co/api/v2/pokemon-species/${pokemonname.toLowerCase()}`
+      // );
+      // if (spaciesdata.status != 200) {
+      //   pokemonAllData.isLegendary = false;
+      // } else {
+      //   pokemonAllData.isLegendary = spaciesdata.data.is_legendary;
+      // } // console.log("is legendary", spaciesdata.data.is_legendary);
 
-    if (evoluationPokemonData.status == 404) {
-      evoluationPokemonData = [];
-      setPokemonList(evoluationPokemonData);
+      ///---------abilites--------------
+      const abilityList = pdata.data.abilities;
+      // // console.log(abilityList);
+      // abilityList.forEach((e) => {
+      //   // console.log(e.ability.name);
+      //   // console.log(e.ability.url);
+      // });
+
+      const promises = abilityList.map(async (e) => {
+        const result = await axios.get(e.ability.url);
+        // console.log(result.data.flavor_text_entries[0]);
+        // return result.data.flavor_text_entries[0].flavor_text;
+        return {
+          ablityName: e.ability.name,
+          explation: result.data.flavor_text_entries[0].flavor_text,
+        };
+      });
+
+      const results = await Promise.all(promises);
+      pokemonAllData.abilities = results;
+      // console.log("Ability List", results);
+
+      //----------------------Strength & weakness-----------------------
+      const typename = pdata.data.types[0].type.name;
+      const typeUrl = pdata.data.types[0].type.url;
+      pokemonAllData.type = typename;
+      // console.log("pokemontype", typename);
+      // // console.log(typeUrl);
+      const powerData = await axios.get(typeUrl);
+      // // console.log(powerData.data.damage_relations);
+      const strong = powerData.data.damage_relations.double_damage_to;
+      const strength = [];
+      strong.forEach((e) => {
+        strength.push(e.name);
+      });
+      // console.log("strong against", strength);
+      pokemonAllData.strength = strength;
+      const weak = powerData.data.damage_relations.double_damage_from;
+      const weakness = [];
+      weak.forEach((e) => {
+        weakness.push(e.name);
+      });
+      pokemonAllData.weakness = weakness;
+      // console.log("weak against", weakness);
+      /////-----------------moves 5------------
+      const movearray = pdata.data.moves;
+      const topMoves = [];
+      for (let i = 0; i < 5; i++) {
+        // movearray[i].move.name;
+        topMoves.push(movearray[i].move.name);
+      }
+      pokemonAllData.moves = topMoves;
+      // console.log("top Moves", topMoves);
+
+      /////-------------------------------------------------
+      const pstates = pdata.data.stats;
+      const statesData = [];
+      pstates.forEach((e) => {
+        statesData.push({ stateName: e.stat.name, stateValue: e.base_stat });
+      });
+      pokemonAllData.states = statesData;
+      // console.log("stats", statesData);
+      //-------------------------------------------------
+      // console.log(pstates);
+      ///-----evoluation data-----------
+      const evoluationList = await getListofEvoluation(evoluationApi);
+      // console.log("Evoluation means getlist success -", evoluationList);
+      evoluationPokemonData = await showPokemons(evoluationList);
+      // console.log(evoluationPokemonData);
+
+      if (evoluationPokemonData.status == 404) {
+        evoluationPokemonData = [];
+        setPokemonList(evoluationPokemonData);
+      }
+
+      // setPokemonList(evoluationPokemonData);
+      // setPokemonMaterData(pokemonAllData);
+      // setTextColor(`${pokemontypeColor[`${pokemonAllData.type}`]}`);
+      // console.log(pokemonAllData);
+      setShowLoader(false);
+      // console.log("evoluation-data success", evoluationPokemonData);
+      // setPokemonList(evoluationPokemonData);
     }
-
-    // setPokemonList(evoluationPokemonData);
-    // setPokemonMaterData(pokemonAllData);
-    // setTextColor(`${pokemontypeColor[`${pokemonAllData.type}`]}`);
-    // console.log(pokemonAllData);
-    setShowLoader(false);
-    // console.log("evoluation-data success", evoluationPokemonData);
-    // setPokemonList(evoluationPokemonData);
   }
 
   async function setAllData() {

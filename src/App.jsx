@@ -16,6 +16,7 @@ import Evoluation from "./pages/Evoluation";
 import PokemonDetails from "./pages/PokemonDetails";
 import Footer from "./Components/Footer";
 import Legendary from "./pages/Legendary";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -34,6 +35,9 @@ function App() {
           element={<PokemonDetails />}
         ></Route>
         <Route path="/legendary" element={<Legendary />}></Route>
+        <Route path="/notfound" element={<NotFound />}></Route>
+
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer />
     </main>
