@@ -17,10 +17,11 @@ function TopNav() {
     }
   }
   return (
-    <div className="fixed z-10 top-0 left-0 w-full px-4 py-2 flex justify-between items-center text-black ">
+    <div className="fixed z-10 top-0 left-0 w-full px-4 py-2 flex justify-between items-center text-white ">
       <Link to="/">
         <img className="h-[40px]" src="../logo.png" alt="" />
       </Link>
+
       <i
         onClick={changToggel}
         className="fa-solid fa-bars text-[1.5rem] text-white cursor-pointer"
@@ -32,7 +33,7 @@ function TopNav() {
         >
           <div className="w-[40%] md:w-[80%]">1</div>
           <div className="min-w-[150px] w-[60%] md:w-[20%]">
-            <div className="h-[50px] bg-white  flex justify-center items-center cursor-pointer">
+            <div className="h-[50px] text-white flex justify-center items-center cursor-pointer">
               <i className="fa-solid fa-xmark text-[1.5rem]  "></i>
             </div>
             <LeftNav />

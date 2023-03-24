@@ -13,7 +13,8 @@ function Types() {
   const [showLoder, setShowLoader] = useState(false);
   const [textColor, setTextColor] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-
+  // console.log(typeName);
+  // console.log("currentPage", currentPage);
   const typApi = "https://pokeapi.co/api/v2/type/";
 
   async function loadAllPokemons(start) {
@@ -84,10 +85,14 @@ function Types() {
     setShowLoader(false);
     // console.log(results);
   }
+  let orignaltype = typeName;
+  // console.log(orignaltype);
+  // console.log(currentPage);
   useEffect(() => {
+    window.scrollTo(0, 0);
     showPokemons(currentPage);
     setTextColor(`${pokemontypeColor[`${typeName}`]}`);
-  }, [currentPage]);
+  }, [currentPage, typeName]);
 
   // console.log(textColor);
   //  text-[${
@@ -100,6 +105,19 @@ function Types() {
           <CircleLoader color="#36d7b7" />
         </div>
       )}
+      <div className="mx-auto max-w-xl text-center pt-20">
+        <h1 className="text-3xl font-extrabold sm:text-4xl">
+          <strong
+            className="font-extrabold  sm:block uppercase tracking-widest"
+            style={{ color: textColor }}
+          >
+            {typeName}
+          </strong>
+        </h1>
+
+        <p className="mt-4 sm:text-xl sm:leading-relaxed">Type Pokemon</p>
+      </div>
+
       <div className="pt-14  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center">
         {typePokemon.map((pokemon, i) => (
           <Link key={i} to={`/pokemon/${pokemon.id}`} state={pokemon}>
@@ -123,25 +141,32 @@ function Types() {
 
           <button
             onClick={(event) => handleclick(1)}
-            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+            className={`flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105 
+            ${currentPage == 1 ? "border-red-500" : "border-gray-400 "}`}
           >
             1
           </button>
           <button
             onClick={(event) => handleclick(2)}
-            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+            className={`flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105${
+              currentPage == 2 ? "border-red-500" : "border-gray-400 "
+            }`}
           >
             2
           </button>
           <button
             onClick={(event) => handleclick(3)}
-            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+            className={`flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105 ${
+              currentPage == 3 ? "border-red-500" : "border-gray-400 "
+            }`}
           >
             3
           </button>
           <button
             onClick={(event) => handleclick(4)}
-            className="flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105"
+            className={`flex items-center px-4 py-2 mx-1 text-white border border-gray-400 dark:border-gray-800 rounded-md dark:text-gray-400 hover:scale-105 ${
+              currentPage == 4 ? "border-red-500" : "border-gray-400 "
+            }`}
           >
             4
           </button>

@@ -14,26 +14,28 @@ import LeftNav from "./pages/LeftNav";
 import TopNav from "./pages/TopNav";
 import Evoluation from "./pages/Evoluation";
 import PokemonDetails from "./pages/PokemonDetails";
+import Footer from "./Components/Footer";
+import Legendary from "./pages/Legendary";
 
 function App() {
   const [count, setCount] = useState(0);
+  // style={{ backgroundImage: "url(../bg1.jpg)" }}
 
   return (
-    <main
-      className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#f1f1f1]  p-8 bg-cover bg-center text-white"
-      style={{ backgroundImage: "url(../bg1.jpg)" }}
-    >
+    <main className=" min-w-[375px] font-['Poppins']  max-w-[1440px] bg-[#111]  p-8 bg-cover bg-center text-white">
       <TopNav />
-      {/* <LeftNav /> */}
+
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="type/:typeName" element={<Types />}></Route>
-        {/* <Route path="evoluation" element={<Evoluation />}></Route> */}
+
         <Route
           path="/pokemon/:pokemonname"
           element={<PokemonDetails />}
         ></Route>
+        <Route path="/legendary" element={<Legendary />}></Route>
       </Routes>
+      <Footer />
     </main>
   );
 }

@@ -54,7 +54,7 @@ async function getListofEvoluation(url) {
         res.sprites.other.home.front_shiny;
       let name = res.name;
       let returnobj = {
-        id: pokemon,
+        id: res.id,
         pokemonName: name,
         PokemonImgSrc: imagesrc,
       };
@@ -66,7 +66,7 @@ async function getListofEvoluation(url) {
 
     const results = await Promise.all(promises).catch((err) =>{
       // log that I have an error, return the entire array;
-      console.log('A promise failed to resolve', err);
+      // console.log('A promise failed to resolve', err);
       return [];
   });
     
