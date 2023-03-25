@@ -21,11 +21,22 @@ function TopNav() {
       <Link to="/">
         <img className="h-[40px]" src="../logo.png" alt="" />
       </Link>
+      <div className="flex gap-8 text-white text-[1.5rem] justify-center items-center ">
+        <a
+          href="https://www.linkedin.com/in/akshay-jadhav-01737711b/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {" "}
+          <i className="fa-brands fa-linkedin hover:text-red-500"></i>
+        </a>
 
-      <i
-        onClick={changToggel}
-        className="fa-solid fa-bars text-[1.5rem] text-white cursor-pointer"
-      ></i>
+        <i
+          onClick={changToggel}
+          className="fa-solid fa-bars text-[1.5rem] text-white cursor-pointer"
+        ></i>
+      </div>
+
       {showToggle && (
         <div
           onClick={changToggel}

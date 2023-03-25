@@ -185,7 +185,7 @@ function PokemonDetails() {
           <ClimbingBoxLoader color="#36d7b7" />
         </div>
       )}
-      <div className="flex flex-col justify-center items-center md:flex-row  gap-16 border-b mb-8 border-white">
+      <div className="flex flex-col justify-center items-center md:justify-start md:flex-row  gap-16 border-b mb-8 border-white">
         <div className="flex flex-col mb-8 justify-center items-center rounded-md   drop-shadow-lg hover:drop-shadow-2xl">
           <img
             className="w-[300px] h-[300px]"
@@ -274,7 +274,7 @@ function PokemonDetails() {
         {pokemonMasterData.strength.map((m, i) => (
           <button
             key={m}
-            className="rounded-md  px-3.5 py-1.5 mr-4 text-base font-semibold leading-7 text-black "
+            className="rounded-md  px-3.5 py-1.5 mr-4 mb-2 text-base font-semibold leading-7 text-black "
             style={{ backgroundColor: `${pokemontypeColor[m]}` }}
           >
             {m}
